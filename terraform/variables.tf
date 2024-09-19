@@ -9,5 +9,4 @@ variable "clusterName" {
  type = string
  default = "vpro-eks"
 }
-
 #Adding something random to trigger the github workflow
