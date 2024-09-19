@@ -30,40 +30,40 @@ jobs:
   terraform:
     name: "Terraform code changes executor"
     runs-on: ubuntu-latest #This specifies the runner to be used by github actions. Runners are like containers (An operating system in this case) on which the job should be executed.
-    run:
-      default:
+    defaults:
+      run:
         shell: bash
         working-directory: ./terraform
       
-      steps:
-        - name: Checkout source code
-          uses: actions/checkout@v4
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
 
-      #This step uses the github action in the market place to setup terraform (install terraform) on the runner
+    #This step uses the github action in the market place to setup terraform (install terraform) on the runner
 
-        - name: Setup terraform with specified version on the runner
-          uses: hashicorp/setup-terraform@v2
-          #with:
-            #terraform-version:1.6.3
+      - name: Setup terraform with specified version on the runner
+        uses: hashicorp/setup-terraform@v2
+        #with:
+          #terraform-version:1.6.3
 
-        - name: Terraform Initialisation
-          id: init
-          run: terraform init bucket-config="bucket=$BUCKET_TF_STATE"
+      - name: Terraform Initialisation
+        id: init
+        run: terraform init bucket-config="bucket=$BUCKET_TF_STATE"
 
-        - name: Terraform file formating
-          id: fmt
-          run: terraform fmt -check #This line returns a non-zero exit code is the formating isn't correct and then halt the deployment process
+      - name: Terraform file formating
+        id: fmt
+        run: terraform fmt -check #This line returns a non-zero exit code is the formating isn't correct and then halt the deployment process
 
-        - name: Terraform Validation
-          id: validate
-          run: terraform validate
+      - name: Terraform Validation
+        id: validate
+        run: terraform validate
 
-        - name: Terraform Planning
-          id: plan
-          run: terraform plan -no-color -input-false -output planfile
-          continue-on-error: true
+      - name: Terraform Planning
+        id: plan
+        run: terraform plan -no-color -input-false -output planfile
+        continue-on-error: true
 
-        - name: Terraform plan status checker
-          if: steps.plan.outcome == 'failure'
-          run: exit 1
+      - name: Terraform plan status checker
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
 
