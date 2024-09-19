@@ -1,4 +1,4 @@
-name: "Vprofile IAC"
+name: "Github Action With Terraform"
 on: #What should cause this workflow/pipeline to get triggered
   push:
     branches:
