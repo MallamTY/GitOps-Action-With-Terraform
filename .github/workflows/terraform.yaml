@@ -3,7 +3,7 @@ on: #What should cause this workflow/pipeline to get triggered
   push:
     branches:
       - main
-      - stage
+      - staging
     paths:
       - terraform/**
   
@@ -26,7 +26,7 @@ env:
 
   BUCKET_TF_STATE: ${{ secrets.BUCKET_NAME }}
 
-jobs:
+  jobs:
   terraform:
     name: "Terraform code changes executor"
     runs-on: ubuntu-latest #This specifies the runner to be used by github actions. Runners are like containers (An operating system in this case) on which the job should be executed.
@@ -66,4 +66,4 @@ jobs:
         - name: Terraform plan status checker
           if: steps.plan.outcome == 'failure'
           run: exit 1
-          
+
